@@ -24,7 +24,7 @@ BETA = 0.1  # Hiperparâmetro que controla a divergência KL (veja README.md)
 # ─────────────────────────────────────────
 
 def load_dataset_from_jsonl(path: str) -> Dataset:
-    """Carrega o dataset de preferências no formato exigido pelo DPOTrainer."""
+    """Carrega o dataset de preferências no formato exigido"""
     records = []
     with open(path, "r", encoding="utf-8") as f:
         for line in f:
@@ -39,7 +39,7 @@ def load_dataset_from_jsonl(path: str) -> Dataset:
         assert "rejected" in record, f"Linha {i}: chave 'rejected' ausente"
 
     dataset = Dataset.from_list(records)
-    print(f"✅ Dataset carregado: {len(dataset)} exemplos")
+    print(f"Dataset carregado com sucesso: {len(dataset)} exemplos")
     print(f"   Colunas: {dataset.column_names}")
     return dataset
 
@@ -50,9 +50,9 @@ def load_dataset_from_jsonl(path: str) -> Dataset:
 
 def load_model_and_tokenizer(model_name: str):
     """
-    Carrega tokenizer e modelo.
-    O DPOTrainer cria automaticamente o modelo de referência (ref_model)
-    a partir de uma cópia congelada do modelo ator.
+    Carrega tokenizer e modelo
+    O DPOTrainer cria automaticamente um modelo de referência
+    com base n4uma cópia congelada do modelo ator.
     """
     print(f"\nCarregando modelo: {model_name}")
 
@@ -69,7 +69,7 @@ def load_model_and_tokenizer(model_name: str):
         device_map="auto",           # usa GPU se disponível, senão CPU
     )
 
-    print(f"✅ Modelo carregado. Parâmetros: {model.num_parameters():,}")
+    print(f"Modelo carregado com sucesso. Parâmetros: {model.num_parameters():,}")
     return model, tokenizer
 
 
@@ -79,9 +79,9 @@ def load_model_and_tokenizer(model_name: str):
 
 def build_training_config(output_dir: str, beta: float) -> DPOConfig:
     """
-    Configura os hiperparâmetros de treinamento.
+    Configura os hiperparâmetros de treinamento
 
-    beta: controla a força da penalidade KL (veja README.md para explicação matemática)
+    beta: controla a força da penalidade KL, explicação matemática no README
     """
     return DPOConfig(
         output_dir=output_dir,
@@ -108,8 +108,8 @@ def build_training_config(output_dir: str, beta: float) -> DPOConfig:
 
 def validate_alignment(model, tokenizer, device: str = "cpu"):
     """
-    Passa prompts maliciosos pelo modelo treinado e exibe as respostas.
-    Compara log-probabilidades da resposta chosen vs rejected.
+    Passa prompts maliciosos pelo modelo treinado e exibe as respostas
+    Compara log-probabilidades da resposta chosen e rejected
     """
     print("\n" + "=" * 60)
     print("VALIDAÇÃO DE ALINHAMENTO")
@@ -157,7 +157,7 @@ def validate_alignment(model, tokenizer, device: str = "cpu"):
 
 def main():
     print("=" * 60)
-    print("  Laboratório 08 — Alinhamento Humano com DPO")
+    print("  LAB8: Alinhamento Humano com DPO")
     print("=" * 60)
 
     # Passo 1: Dataset
@@ -183,12 +183,12 @@ def main():
     # Passo 4: Treinamento
     print("\nIniciando treinamento DPO...")
     trainer.train()
-    print("\n✅ Treinamento concluído!")
+    print("\nTreinamento completo")
 
     # Salva modelo alinhado
     trainer.save_model(OUTPUT_DIR)
     tokenizer.save_pretrained(OUTPUT_DIR)
-    print(f"✅ Modelo salvo em: {OUTPUT_DIR}")
+    print(f"Modelo salvo com sucesso. Local: {OUTPUT_DIR}")
 
     # Passo 4: Validação
     device = next(model.parameters()).device
