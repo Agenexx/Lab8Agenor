@@ -69,7 +69,7 @@ Ao executar o script, o sistema apresentará:
 
 ## Nota de Crédito
 
-Partes geradas/complementadas com IA, revisadas por [Seu Nome].
+Partes geradas/complementadas com IA, revisadas por Agenor Neto
 
 Conforme as regras da disciplina e o contrato pedagógico sobre o uso de IA Generativa, registro que utilizei o assistente virtual para:
 * Geração dos 32 exemplos do dataset de preferências HHH (`hhh_dataset.jsonl`).
